@@ -1,4 +1,4 @@
 # ray-tracer
-光追，参考Ray Tracer Challenge
+光追，Ray Tracer Challenge
 
 ![](./ray.jpg)
