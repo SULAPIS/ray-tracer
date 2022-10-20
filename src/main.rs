@@ -2,7 +2,7 @@ use std::f32::consts::PI;
 
 use image::Rgb;
 use rapier3d::{
-    na::{Isometry3, Point3, Vector3},
+    na::{Isometry3, Point3, Translation3, UnitDualQuaternion, Vector3},
     prelude::*,
 };
 use ray_tracer::{
@@ -19,7 +19,8 @@ fn main() {
     m.material.diffuse = 0.6;
     m.material.specular = 0.3;
     m.material.shininess = 10;
-    m.center = Point3::new(-0.5, 1.0, 0.5);
+    m.radius = 0.7;
+    m.center = Point3::new(-0.8, 1.7, -1.2);
     w.objects.push(m);
     let mut r = Sphere::default();
     r.material.color = RayRgb::new(0.5, 1.0, 0.1);
@@ -43,7 +44,8 @@ fn main() {
     q.material.specular = 0.3;
     q.material.shininess = 10;
     q.center = Point3::new(0.0, 2.5, 0.5);
-    q.radius = 0.6;
+
+    q.radius = 0.4;
     w.objects.push(q);
 
     let mut camera = Camera::new(200, 250, PI / 3.0);

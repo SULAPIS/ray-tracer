@@ -6,9 +6,9 @@ use rapier3d::na::{Point3, Vector3};
 use crate::{intersections::*, materials::Material, ray_rgb::RayRgb};
 
 pub struct PointLight {
-    color: RayRgb,
-    position: Point3<f32>,
-    intensity: usize,
+    pub color: RayRgb,
+    pub position: Point3<f32>,
+    pub intensity: usize,
 }
 
 impl PointLight {
@@ -27,11 +27,14 @@ pub fn lighting(
     point: Point3<f32>,
     eyev: Vector3<f32>,
     normalv: Vector3<f32>,
+    in_shadow: bool,
 ) -> RayRgb {
     let effective_color = material.color * light.intensity;
     let lightv = (light.position - point).normalize();
     let ambient = effective_color * material.ambient;
-
+    if in_shadow {
+        return ambient;
+    }
     let light_dot_normal = lightv.dot(&normalv);
 
     let reflectv;
@@ -66,7 +69,7 @@ fn test_lighting() {
     let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 0.0, -10.0));
     let eyev = Vector3::new(0.0, 0.0, -1.0);
     let normalv = Vector3::new(0.0, 0.0, -1.0);
-    let result = lighting(&m, &light, position, eyev, normalv);
+    let result = lighting(&m, &light, position, eyev, normalv, false);
 
     assert_relative_eq!(result.r, 1.9, epsilon = 0.0001);
     assert_relative_eq!(result.g, 1.9, epsilon = 0.0001);
@@ -75,7 +78,7 @@ fn test_lighting() {
     let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 0.0, -10.0));
     let normalv = Vector3::new(0.0, 0.0, -1.0);
     let eyev = Vector3::new(0.0, (2.0 as f32).sqrt() / 2.0, -(2.0 as f32).sqrt() / 2.0);
-    let result = lighting(&m, &light, position, eyev, normalv);
+    let result = lighting(&m, &light, position, eyev, normalv, false);
 
     assert_relative_eq!(result.r, 1.0, epsilon = 0.0001);
     assert_relative_eq!(result.g, 1.0, epsilon = 0.0001);
@@ -84,7 +87,7 @@ fn test_lighting() {
     let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 10.0, -10.0));
     let eyev = Vector3::new(0.0, 0.0, -1.0);
     let normalv = Vector3::new(0.0, 0.0, -1.0);
-    let result = lighting(&m, &light, position, eyev, normalv);
+    let result = lighting(&m, &light, position, eyev, normalv, false);
 
     assert_relative_eq!(result.r, 0.7364, epsilon = 0.0001);
     assert_relative_eq!(result.g, 0.7364, epsilon = 0.0001);
@@ -93,7 +96,7 @@ fn test_lighting() {
     let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 10.0, -10.0));
     let eyev = Vector3::new(0.0, -(2.0 as f32).sqrt() / 2.0, -(2.0 as f32).sqrt() / 2.0);
     let normalv = Vector3::new(0.0, 0.0, -1.0);
-    let result = lighting(&m, &light, position, eyev, normalv);
+    let result = lighting(&m, &light, position, eyev, normalv, false);
 
     assert_relative_eq!(result.r, 1.6364, epsilon = 0.0001);
     assert_relative_eq!(result.g, 1.6364, epsilon = 0.0001);
@@ -102,7 +105,16 @@ fn test_lighting() {
     let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 0.0, 10.0));
     let eyev = Vector3::new(0.0, 0.0, -1.0);
     let normalv = Vector3::new(0.0, 0.0, -1.0);
-    let result = lighting(&m, &light, position, eyev, normalv);
+    let result = lighting(&m, &light, position, eyev, normalv, false);
+
+    assert_relative_eq!(result.r, 0.1, epsilon = 0.0001);
+    assert_relative_eq!(result.g, 0.1, epsilon = 0.0001);
+    assert_relative_eq!(result.b, 0.1, epsilon = 0.0001);
+
+    let light = PointLight::new(RayRgb::white(), Point3::new(0.0, 0.0, -10.0));
+    let eyev = Vector3::new(0.0, 0.0, -1.0);
+    let normalv = Vector3::new(0.0, 0.0, -1.0);
+    let result = lighting(&m, &light, position, eyev, normalv, true);
 
     assert_relative_eq!(result.r, 0.1, epsilon = 0.0001);
     assert_relative_eq!(result.g, 0.1, epsilon = 0.0001);

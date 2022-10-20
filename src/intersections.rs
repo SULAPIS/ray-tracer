@@ -1,3 +1,5 @@
+use std::f32::EPSILON;
+
 #[cfg(test)]
 use approx::assert_relative_eq;
 use rapier3d::{
@@ -80,14 +82,16 @@ pub fn prepare_computations<'a>(intersection: &'a Intersection, ray: &Ray) -> Co
         point,
         -ray.dir,
         normalv,
+        Point3::new(0.0, 0.0, 0.0),
     );
+
     if normalv.dot(&comps.eyev) < 0.0 {
         comps.inside = true;
         comps.normalv = -comps.normalv;
     } else {
         comps.inside = false;
     }
-
+    comps.over_point = comps.point + comps.normalv * EPSILON * 100.0;
     comps
 }
 

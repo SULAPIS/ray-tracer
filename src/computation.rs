@@ -10,6 +10,7 @@ pub struct Computation<'a> {
     pub eyev: Vector3<f32>,
     pub normalv: Vector3<f32>,
     pub inside: bool,
+    pub over_point: Point3<f32>,
 }
 impl<'a> Computation<'a> {
     pub fn new(
@@ -18,6 +19,7 @@ impl<'a> Computation<'a> {
         point: Point3<f32>,
         eyev: Vector3<f32>,
         normalv: Vector3<f32>,
+        over_point: Point3<f32>,
     ) -> Self {
         Self {
             t,
@@ -26,6 +28,7 @@ impl<'a> Computation<'a> {
             eyev,
             normalv,
             inside: false,
+            over_point,
         }
     }
 }
