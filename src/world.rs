@@ -20,8 +20,6 @@ impl Default for World {
         sphere1.material.diffuse = 0.9;
         sphere1.material.specular = 0.4;
         sphere1.material.ambient = 0.5;
-        // let mut sphere2 = Sphere::new(Point3::new(0.0, 0.0, 0.0), 0.5);
-        // sphere2.scale = Scale3::new(0.5, 0.5, 0.5);
 
         Self {
             lights: vec![light],
@@ -54,6 +52,7 @@ pub fn shade_hit(world: &World, comps: &Computation) -> RayRgb {
         comps.eyev,
         comps.normalv,
         shadowed,
+        &comps.object,
     )
 }
 

@@ -9,7 +9,7 @@ use rapier3d::{
     prelude::*,
 };
 
-use crate::{intersections::*, materials::Material};
+use crate::{intersections::*, materials::Material, pattern::Pattern};
 #[derive(Debug, Clone, PartialEq)]
 pub struct Sphere {
     pub center: Point3<f32>,

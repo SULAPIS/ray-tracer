@@ -1,6 +1,6 @@
 use image::Rgb;
 
-use crate::ray_rgb::RayRgb;
+use crate::{pattern::Pattern, ray_rgb::RayRgb};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Material {
@@ -9,6 +9,7 @@ pub struct Material {
     pub diffuse: f32,
     pub specular: f32,
     pub shininess: usize,
+    pub pattern: Option<Pattern>,
 }
 
 impl Material {
@@ -28,6 +29,7 @@ impl Default for Material {
             diffuse: 0.9,
             specular: 0.9,
             shininess: 200,
+            pattern: None,
         }
     }
 }

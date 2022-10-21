@@ -7,7 +7,7 @@ use rapier3d::{
     prelude::*,
 };
 
-use crate::{computation::Computation, light::lighting, ray_rgb::RayRgb, sphere::Sphere};
+use crate::{computation::Computation, light::lighting, ray_rgb::RayRgb, shape, sphere::Sphere};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Intersection<'a> {
@@ -43,7 +43,6 @@ pub fn intersect<'a>(s: &'a Sphere, r: &Ray) -> Option<Vec<Intersection<'a>>> {
     }
     None
 }
-
 pub fn intersection<'a>(t: f32, s: &'a Sphere) -> Intersection<'a> {
     Intersection::new(t, s)
 }
